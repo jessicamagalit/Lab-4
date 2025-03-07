@@ -1,0 +1,44 @@
+---
+title: "Lab 4: LTER Network Data"
+subtitle: 'Ecosystem Science and Sustainability 330'
+author:
+  - name: "Jessie Magalit"
+    url: https://github.com/jessicamagalit/jessicamagalit.github.io.git
+    email: "jmagalit@colostate.edu"
+format: html
+---
+## Question 1:
+
+```{r}
+
+```
+
+## Question 2:
+
+```{r}
+
+```
+
+## Question 3:
+
+```{r}
+
+```
+
+## Question 4:
+
+```{r}
+
+```
+
+## Question 5:
+
+```{r}
+
+```
+
+## Question 6:
+
+```{r}
+
+```
