@@ -1,15 +1,11 @@
 ---
 title: 'Lab 4: LTER Network Data'
-subtitle: 'Ecosystem Science and Sustainability 330'
-author:
-  - name: "Jessie Magalit"
-    url: https://github.com/jessicamagalit/jessicamagalit.github.io.git
-    email: "jmagalit@colostate.edu"
-  format:
-   html:
-    code-fold: true
-    toc: true
 subtitle: 'Introduction to Statistics in R'
+author: "Jessie Magalit"
+date: "2025-03-07"
+format: html
+execute: 
+  echo: true
 ---
 
 ```{r, include = F}
