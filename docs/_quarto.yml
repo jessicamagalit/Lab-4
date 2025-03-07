@@ -1,3 +1,4 @@
+---
 project: 
   title: "csu-ess-lab4"
   output-dir: docs
@@ -6,3 +7,4 @@ project:
 format:
   html:
     self-contained: true
+---
