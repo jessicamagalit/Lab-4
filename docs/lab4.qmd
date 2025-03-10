@@ -22,7 +22,6 @@ library(tidyverse)
 ```{r}
 #| echo: false
 #| out.width: "100%"
-knitr::include_graphics('images/LTER-Network-Logo-2017.jpg')
 ```
 
 This lab will walk us through some basic statistical tests in R, including chi-square, t-tests, and correlation tests. We will use data from the Long-Term Ecological Research (LTER) Network, which is a collaborative effort involving more than 2000 scientists and students investigating ecological processes over long temporal and broad spatial scales. The basics of this lab were adopted from a previous version of this course. This qmd for this lab can be downloaded [here](). Please download it into the repo of your choice and open it in RStudio to work through this lab:
@@ -326,9 +325,12 @@ Each question requires you to carry out a statistical analysis to test some hypo
 library(tidyverse)
 library(ggpubr)
 library(lterdatasampler)
+library(car)
 
-# Load dataset
-and_vertebrates <- and_vertebrates
+# Load the dataset
+data("and_vertebrates")
+# View the structure
+glimpse(and_vertebrates)
 ```
 
 **1.** Conduct a chi-square test similar to the one carried out above, but test for a relationship between forest type (`section`) and channel unit (`unittype`) for *Coastal giant salamander* abundance. *Keep all unittypes* instead of filtering any like we did for the Cutthroat trout (10 pts.)
@@ -344,6 +346,7 @@ cont_table_salamander <- table(salamander_data$section, salamander_data$unittype
 chi_test_salamander <- chisq.test(cont_table_salamander)
 print(chi_test_salamander)
 ```
+This code filters the data for coastal giant salamanders and removes rows with missing values in the unittype/section columns. It then creates a table showing the relationship between forest type (section) and chanel unit (unittype) and performs a chi-square test to check if these variables are related. The end result shows a significant relationship p-value < 2.2e-16), meaning the two variables are likely linked.
 
 **2.** Test the hypothesis that there is a significant difference in species biomass between clear cut and old growth forest types for the *Coastal Giant salamander*. (10 pts.)
 
@@ -372,6 +375,7 @@ if (var_test$p.value < 0.05) {
 }
 print(t_test_salamander)
 ```
+The code filters the data for coastal giant salamanders and removes any rows with missing weight values. it then visualizes the distribution of weight for each forest type (section) using a violin plot. The code checks if the variances in weight between the clearcut (CC) and old-growth (OG) forest types are equal using a variance test. The test result shows a significant differences in species biomass between the two forest types (p-value 8.629e-07), with the clear-cut forest type having a higher mean weight.
 
 **3.** Test the correlation between body length (snout to fork length) and body mass for *Cutthroat trout*. (Hint: run `?and_vertebrates` to find which length variable represents snout to fork length) (10 pts.)
 
@@ -399,7 +403,7 @@ trout_data |>
   ggscatter(x = 'log_length', y = 'log_weight', alpha = .35, add = "loess")
 
 ```
-
+this code checks if cutthroat trout body length and weight are normally distributed. Since they are not, both variables are log-transformed. A pearson correlation test shows a very strong positive relationship between the log-transformed length and weight (correlation = 0.997).
 
 # Part 2: Multivariate Statistics
 
@@ -656,6 +660,7 @@ pie_sites |>
   geom_jitter(size = .25) +
   theme(legend.position = "none")
 ```
+The boxplot reveals the distribution of caraspace width fot crabs at three selected sites ordered by latitude (GTM, DB, and PIE). The tukey HSD test shows significant differences in caraspace width between the sites, with GTM crabs being significantly smaller than those at PIE, and DB crabs being smaller than those at PIE as well. Specifically, the differences in means between these pairs are statistically significant (p-values are all <0.001).
 
 2.  Conduct a simple linear regression for the effect of `water_temp_sd` (a measure reflecting annual variation in water temperature) on carapace width. Report your findings (include code *and* a sentence reporting the results) AND create a plot with a line of best fit. *Include both the code to create the plot and an image of the figure*. (10 pts).
 
@@ -667,6 +672,7 @@ summary(lm_water_temp)
 pie_crab |> 
   ggscatter(x = 'water_temp_sd', y = 'size', alpha = .35, add = "reg.line")
 ```
+The linear regression indicates that water_temp_sd does not significantly predict caraspace width (p-value = 0.528). The R-squared value is very small (0.001), suggesting a very weak relationship between these variables.
 
 3.  Conduct a multiple linear regression for the effects of `latitude`, `air_temp_sd`, and `water_temp_sd` on carapace width. **First** check for correlations among the three predictor variables (and report the correlation table) and **second** report your findings from the multiple linear regression (code *and* a sentence reporting the results). (10 pts.)
 
@@ -678,6 +684,7 @@ print(cor_table)
 mlr_model <- lm(size ~ latitude + air_temp_sd + water_temp_sd, data = pie_crab)
 summary(mlr_model)
 ```
+latitude significantly affects carapace width (p< 2e-16), while air_temp_sd and water_temp_sd are not significant predictors (p= 0.1730 and p= 0.3254). The model explains 35.2% of the variance (R-squared = 0.3516).
 
 ## Acknowledgements
 
@@ -692,5 +699,3 @@ Thanks to the developers of [`lterdatasampler`](https://lter.github.io/lterdatas
 ***Data Source:*** Gregory, S.V. and I. Arismendi. 2020. Aquatic Vertebrate Population Study in Mack Creek, Andrews Experimental Forest, 1987 to present ver 14. Environmental Data Initiative. <https://doi.org/10.6073/pasta/7c78d662e847cdbe33584add8f809165>
 
 Kaylor, M.J. and D.R. Warren. 2017. Linking riparian shade and the legacies of forest management to fish and vertebrate biomass in forested streams. Ecosphere *8*(6). <https://doi.org/10.1002/ecs2.1845>
-
-
